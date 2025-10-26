@@ -2,7 +2,7 @@
  * @Author: Zhang-sklda 845603757@qq.com
  * @Date: 2025-10-26 10:30:46
  * @LastEditors: Zhang-sklda 845603757@qq.com
- * @LastEditTime: 2025-10-26 10:30:52
+ * @LastEditTime: 2025-10-26 11:46:23
  * @FilePath: /7Dof_Kinematics_iiwa_Rokae/src/KUKAiiwaSolver.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -36,12 +36,12 @@ Matrix4d KUKAiiwaSolver::forwardKinematics(const VectorXd& qpos)
 
 	Matrix4d T = Matrix4d::Identity();
 
-	for (int i = 0; i < 7; i++)
-	{
-		Matrix4d A = DH(dh_params[i].d,
+	for (int i = 0; i < 7; ++i) {
+		Matrix4d A = DH(
+			dh_params[i].d,
 			dh_params[i].alpha,
 			dh_params[i].a,
-			dh_params[i].theta + qpos(i)
+			qpos(i) + dh_params[i].theta  // θ = q_i + offset
 		);
 		T = T * A;
 	}
